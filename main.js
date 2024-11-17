@@ -1,35 +1,22 @@
 "use strict";
 
+import { AddText } from "./HelperFunctions.js";
 let MyCanvas = document.getElementById("MyCanvas");
 let ctx = MyCanvas.getContext("2d");
 let AddTextButton = document.getElementById("AddTextButton");
+let AddPicButton = document.getElementById("AddPicButton");
 let ModelContainer = document.getElementById("ModelContainer");
 let Canvas = (window.canvas = new fabric.Canvas(MyCanvas, {
   // backgroundColor: "white",
   // backgroundImage: "Model1.jpg",
 }));
 Canvas.selection = false;
+
 Canvas.setDimensions({
   width: 800,
   height: 500,
 });
 
-function AddText(MyText) {
-  let NewText = new fabric.IText(MyText, {
-    fill: "black",
-  });
-  let CanvWidth = Canvas.width / 2;
-  let CanvHeight = Canvas.height / 2;
-  console.log(CanvHeight, CanvWidth);
-  console.log(NewText.height / 2, NewText.width / 2);
-  NewText.set({
-    left: CanvWidth - Math.round(NewText.width / 2),
-    top: CanvHeight / 2 - Math.round(NewText.height / 2),
-  });
-  Canvas.add(NewText);
-  Canvas.setActiveObject(NewText);
-  NewText.enterEditing();
-}
 function DrawImage(ImgSrc) {
   console.log("Drawing...");
   let NNImage = fabric.Image.fromURL(ImgSrc).then((img) => {
@@ -41,13 +28,11 @@ function DrawImage(ImgSrc) {
   });
 }
 AddTextButton.addEventListener("click", function () {
-  AddText("Horimiri");
+  AddText("Киро Скалата", Canvas);
 });
 // GraveInput.addEventListener("input", function (e) {});
 
 ModelContainer.addEventListener("click", function (e) {
-  console.log(Canvas); // Should not be undefined or null
-
   if (e.target.classList.contains("Model")) {
     let bgImage = window.getComputedStyle(e.target).backgroundImage;
     if (bgImage && bgImage !== "none") {
@@ -62,5 +47,25 @@ ModelContainer.addEventListener("click", function (e) {
 document.addEventListener("keyup", function (e) {
   if (e.key === "Delete") {
     Canvas.remove(Canvas.getActiveObject());
+  }
+});
+
+AddPicButton.addEventListener("change", function (e) {
+  let UploadImg = e.target.files[0];
+  if (UploadImg) {
+    let reader = new FileReader();
+    reader.onload = function (e) {
+      fabric.Image.fromURL(e.target.result).then((img) => {
+        img.set({
+          left: 100,
+          top: 100,
+          scaleX: 0.5,
+          scaleY: 0.5,
+        });
+        Canvas.add(img);
+        Canvas.renderAll();
+      });
+    };
+    reader.readAsDataURL(UploadImg);
   }
 });

@@ -6,6 +6,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
+    <script type="module" src="HelperFunctions.js"></script>
   </head>
   <body>
     <canvas width="800" height="600" id="MyCanvas"></canvas>
@@ -18,7 +19,13 @@
       <div class="Model" id="Model1"></div>
       <div class="Model" id="Model2"></div>
     </div>
-    <button id="AddTextButton">Add text</button>
+    <button id="AddTextButton" class="Button">Add text</button>
+    <input
+      type="file"
+      id="AddPicButton"
+      name="Добави Снимка"
+      accept="image/png, image/jpeg"
+    />
     <script type="module" src="main.js"></script>
   </body>
 </html>

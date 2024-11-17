@@ -9,8 +9,14 @@ body {
   height: 150px; /* Set the desired height */
 
   z-index: 10;
+  /* padding: 10px; */
+  margin: 10px;
 }
-
+#ModelContainer {
+  /* padding: 20px; */
+  margin: 10px;
+  display: flex;
+}
 #Model1 {
   background-image: url("Model1.jpg");
 }
@@ -20,4 +26,12 @@ body {
 .upper-canvas {
   background-repeat: no-repeat;
   background-size: cover;
+}
+.canvas-container {
+  margin: 20px;
+  /* padding: 20px; */
+}
+
+.Button {
+  user-select: none;
 }
