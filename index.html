@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/fabric@latest/dist/index.min.js"></script>
   </head>
   <body>
-    <input type="file" , id="UploadButton" , accept="image/png, image/jpeg" />
+    <canvas width="800" height="600" id="MyCanvas"></canvas>
+    <!-- <input type="file" , id="UploadButton" , accept="image/png, image/jpeg" />
     <img id="MyImage" alt="Selected Image" style="display: none" />
     <div id="Grave">awdawda</div>
-    <canvas id="MyCanvas"></canvas>
-    <input type="text" id="GraveInput" />
-    <script src="main.js"></script>
+
+    -->
+    <div id="ModelContainer">
+      <div class="Model" id="Model1"></div>
+      <div class="Model" id="Model2"></div>
+    </div>
+    <button id="AddTextButton">Add text</button>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

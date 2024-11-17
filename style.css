@@ -1,13 +1,23 @@
 body {
   background-color: black;
 }
-#Grave {
-  background-image: url("360_F_258215071_9LsJ4zATYzIj92rKC9pOLt7qiJA3u7lt.jpg");
+.Model {
   background-size: cover;
   background-repeat: no-repeat;
-  display: none;
-  width: 800px; /* Set the desired width */
-  height: 500px; /* Set the desired height */
+  /* display: none; */
+  width: 240px; /* Set the desired width */
+  height: 150px; /* Set the desired height */
 
   z-index: 10;
+}
+
+#Model1 {
+  background-image: url("Model1.jpg");
+}
+#Model2 {
+  background-image: url("Model2.png");
+}
+.upper-canvas {
+  background-repeat: no-repeat;
+  background-size: cover;
 }

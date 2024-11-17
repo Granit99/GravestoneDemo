@@ -1,145 +1,66 @@
 "use strict";
 
-console.log("awd");
-let UploadButton = document.getElementById("UploadButton");
-let MyImage = document.getElementById("MyImage");
 let MyCanvas = document.getElementById("MyCanvas");
-let GraveInput = document.getElementById("GraveInput");
-let ElementArray = [];
-MyCanvas.width = 800;
-MyCanvas.height = 500;
 let ctx = MyCanvas.getContext("2d");
-let img = new Image();
-img.src = "360_F_258215071_9LsJ4zATYzIj92rKC9pOLt7qiJA3u7lt.jpg";
-let UserDrag = false;
-let textX = MyCanvas.width / 2; // Initial horizontal position of the text
-let textY = MyCanvas.height / 2; // Initial vertical position of the text
-let NewImgHeight;
-let NewImgWidth;
-let NewImgAspectRatio;
-console.log(NewImgHeight, NewImgWidth);
-img.onload = function () {
-  ctx.drawImage(img, 0, 0, 800, 500);
-};
-
-//#region functions
-/**
- *
- * @param {string} Text
- */
-function TypeText(Text) {
-  ctx.font = "30px Arial"; // or any other font/size you prefer
-  ctx.textAlign = "center"; // optional, to center-align the text horizontally
-  ctx.textBaseline = "top"; // optional, for the text to be drawn from the top
-  ctx.clearRect(0, 0, MyCanvas.width, MyCanvas.height); // Clear the canvas
-  ctx.drawImage(img, 0, 0, 800, 500); // Redraw the image
-
-  ctx.fillText(`${Text}`, textX, textY);
-}
-/**
- *
- * @param {ArrayBuffer} NewImage
- * @param {Number} Width
- * @param {Number} AspectRatio
- */
-function DrawImge(NewImage, Width, AspectRatio) {
-  img.src = NewImage;
-  img.onload = function () {
-    ctx.drawImage(img, 100, 100, Width, Width / AspectRatio);
-  };
-}
-
-/**
- *@param {string} Name
- * @param {string} Type
- * @param {*} Content
- * @param {number} X
- * @param {number} Y
- * @param {number} Width
- * @param {number} Height
- */
-function CreateCanvasElement(Name, Type, Content, X, Y, Width, Height) {
-  let NewEl = {
-    Name: Name,
-    Type: Type,
-    Content: Content,
-    X: X,
-    Y: Y,
-    Width: Width,
-    Height: Height,
-  };
-  console.log(NewEl);
-  ElementArray.push(NewEl);
-  console.log(ElementArray);
-}
-//#endregion
-GraveInput.addEventListener("input", function (e) {
-  console.log(GraveInput.value);
-  TypeText(GraveInput.value);
+let AddTextButton = document.getElementById("AddTextButton");
+let ModelContainer = document.getElementById("ModelContainer");
+let Canvas = (window.canvas = new fabric.Canvas(MyCanvas, {
+  // backgroundColor: "white",
+  // backgroundImage: "Model1.jpg",
+}));
+Canvas.selection = false;
+Canvas.setDimensions({
+  width: 800,
+  height: 500,
 });
 
-MyCanvas.addEventListener("mousedown", function (e) {
-  const MouseX = e.offsetX;
-  const MouseY = e.offsetY;
-  const textWidth = ctx.measureText(GraveInput.value).width;
-  if (
-    MouseX >= textX - textWidth / 2 &&
-    MouseX <= textX + textWidth / 2 &&
-    MouseY >= textY &&
-    MouseY <= textY + 30
-  ) {
-    console.log("adw");
-    UserDrag = true;
+function AddText(MyText) {
+  let NewText = new fabric.IText(MyText, {
+    fill: "black",
+  });
+  let CanvWidth = Canvas.width / 2;
+  let CanvHeight = Canvas.height / 2;
+  console.log(CanvHeight, CanvWidth);
+  console.log(NewText.height / 2, NewText.width / 2);
+  NewText.set({
+    left: CanvWidth - Math.round(NewText.width / 2),
+    top: CanvHeight / 2 - Math.round(NewText.height / 2),
+  });
+  Canvas.add(NewText);
+  Canvas.setActiveObject(NewText);
+  NewText.enterEditing();
+}
+function DrawImage(ImgSrc) {
+  console.log("Drawing...");
+  let NNImage = fabric.Image.fromURL(ImgSrc).then((img) => {
+    Canvas.setWidth(img.width);
+    Canvas.setHeight(img.height);
+    img.canvas = Canvas;
+    Canvas.backgroundImage = img;
+    Canvas.renderAll();
+  });
+}
+AddTextButton.addEventListener("click", function () {
+  AddText("Horimiri");
+});
+// GraveInput.addEventListener("input", function (e) {});
+
+ModelContainer.addEventListener("click", function (e) {
+  console.log(Canvas); // Should not be undefined or null
+
+  if (e.target.classList.contains("Model")) {
+    let bgImage = window.getComputedStyle(e.target).backgroundImage;
+    if (bgImage && bgImage !== "none") {
+      bgImage = bgImage.replace(/^url\((.*?)\)$/, "$1");
+      bgImage = bgImage.replace(/^"(.*)"$/, "$1");
+      console.log("Processed Image URL:", bgImage); // Log to ensure URL is correct
+      DrawImage(bgImage);
+    }
   }
 });
 
-MyCanvas.addEventListener("mousemove", function (e) {
-  if (UserDrag) {
-    textX = e.offsetX;
-    textY = e.offsetY;
-    TypeText(GraveInput.value);
-  }
-});
-
-MyCanvas.addEventListener("mouseup", function (e) {
-  UserDrag = false;
-});
-MyCanvas.addEventListener("mouseout", function () {
-  UserDrag = false;
-});
-UploadButton.addEventListener("change", function (e) {
-  const ImageFile = e.target.files[0];
-  if (ImageFile) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      // MyImage.src = e.target.result;
-      let LoadImage = new Image();
-
-      LoadImage.onload = function () {
-        let ImageName = ImageFile.name.split(".").slice(0, -1).join(".");
-        console.log("ImageName: ", ImageName);
-        console.log(typeof LoadImage.width);
-        console.log(Number(LoadImage.width));
-        console.log(typeof LoadImage.height);
-        console.log(Number(LoadImage.height));
-        console.log(Number(LoadImage.width) / Number(LoadImage.height));
-
-        NewImgAspectRatio = Number(LoadImage.width) / Number(LoadImage.height);
-        console.log("asp ratio: ", typeof NewImgAspectRatio);
-        CreateCanvasElement(
-          ImageName,
-          "Image",
-          e.target.result,
-          MyCanvas.width / 2,
-          MyCanvas.height / 2,
-          LoadImage.width,
-          LoadImage.height
-        );
-        DrawImge(e.target.result, 200, NewImgAspectRatio);
-      };
-      LoadImage.src = e.target.result;
-      // MyImage.style.display = "block";
-    };
-    reader.readAsDataURL(ImageFile);
+document.addEventListener("keyup", function (e) {
+  if (e.key === "Delete") {
+    Canvas.remove(Canvas.getActiveObject());
   }
 });
