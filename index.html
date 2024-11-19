@@ -15,17 +15,23 @@
     <div id="Grave">awdawda</div>
 
     -->
+    <div id="ButtonContainer">
+      <button style="display: flex" id="AddTextButton" class="CustomButton">
+        Добави Текст
+      </button>
+      <label for="AddPicButton" class="CustomButton">Добави Снимка</label>
+      <input
+        type="file"
+        id="AddPicButton"
+        style="display: none"
+        accept="image/png, image/jpeg"
+      />
+      <button id="SendButton" class="CustomButton">Изпрати Заявка</button>
+    </div>
     <div id="ModelContainer">
       <div class="Model" id="Model1"></div>
       <div class="Model" id="Model2"></div>
     </div>
-    <button id="AddTextButton" class="Button">Add text</button>
-    <input
-      type="file"
-      id="AddPicButton"
-      name="Добави Снимка"
-      accept="image/png, image/jpeg"
-    />
     <script type="module" src="main.js"></script>
   </body>
 </html>

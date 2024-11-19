@@ -17,4 +17,13 @@ export function AddText(MyText, Canvas) {
   NewText.enterEditing();
 }
 
-export function AddPicture() {}
+export function DrawBackground(ImgSrc, Canvas) {
+  console.log("Drawing...");
+  let NNImage = fabric.Image.fromURL(ImgSrc).then((img) => {
+    Canvas.setWidth(img.width);
+    Canvas.setHeight(img.height);
+    img.canvas = Canvas;
+    Canvas.backgroundImage = img;
+    Canvas.renderAll();
+  });
+}

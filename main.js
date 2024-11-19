@@ -1,6 +1,6 @@
 "use strict";
 
-import { AddText } from "./HelperFunctions.js";
+import { AddText, DrawBackground } from "./HelperFunctions.js";
 let MyCanvas = document.getElementById("MyCanvas");
 let ctx = MyCanvas.getContext("2d");
 let AddTextButton = document.getElementById("AddTextButton");
@@ -17,16 +17,6 @@ Canvas.setDimensions({
   height: 500,
 });
 
-function DrawImage(ImgSrc) {
-  console.log("Drawing...");
-  let NNImage = fabric.Image.fromURL(ImgSrc).then((img) => {
-    Canvas.setWidth(img.width);
-    Canvas.setHeight(img.height);
-    img.canvas = Canvas;
-    Canvas.backgroundImage = img;
-    Canvas.renderAll();
-  });
-}
 AddTextButton.addEventListener("click", function () {
   AddText("Киро Скалата", Canvas);
 });
@@ -39,7 +29,7 @@ ModelContainer.addEventListener("click", function (e) {
       bgImage = bgImage.replace(/^url\((.*?)\)$/, "$1");
       bgImage = bgImage.replace(/^"(.*)"$/, "$1");
       console.log("Processed Image URL:", bgImage); // Log to ensure URL is correct
-      DrawImage(bgImage);
+      DrawBackground(bgImage, Canvas);
     }
   }
 });
@@ -56,6 +46,10 @@ AddPicButton.addEventListener("change", function (e) {
     let reader = new FileReader();
     reader.onload = function (e) {
       fabric.Image.fromURL(e.target.result).then((img) => {
+        img.lockUniScaling = true;
+        img.lockScalingFlip = true;
+        img.hasRotatingPoint = false;
+
         img.set({
           left: 100,
           top: 100,
