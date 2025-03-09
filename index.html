@@ -10,28 +10,33 @@
   </head>
   <body>
     <canvas width="800" height="600" id="MyCanvas"></canvas>
-    <!-- <input type="file" , id="UploadButton" , accept="image/png, image/jpeg" />
-    <img id="MyImage" alt="Selected Image" style="display: none" />
-    <div id="Grave">awdawda</div>
 
-    -->
+    <div id="WarningDisplay"></div>
     <div id="ButtonContainer">
       <button style="display: flex" id="AddTextButton" class="CustomButton">
         Добави Текст
       </button>
-      <label for="AddPicButton" class="CustomButton">Добави Снимка</label>
+      <label for="AddPicButton" class="CustomButton" id="AddPicLabel"
+        >Добави Снимка</label
+      >
       <input
         type="file"
         id="AddPicButton"
         style="display: none"
         accept="image/png, image/jpeg"
       />
+    </div>
+    <div id="FormContainer">
+      <label>Име и фамилия: </label>
+      <input id="NameInput" type="text" class="UserInput" />
+      <label>Телефон за връзка: </label>
+      <input id="PhoneInput" type="number" pattern="\d+" class="UserInput" />
       <button id="SendButton" class="CustomButton">Изпрати Заявка</button>
     </div>
     <div id="ModelContainer">
       <div class="Model" id="Model1"></div>
       <div class="Model" id="Model2"></div>
     </div>
-    <script type="module" src="main.js"></script>
+    <script type="module" src="logic.js" defer></script>
   </body>
 </html>

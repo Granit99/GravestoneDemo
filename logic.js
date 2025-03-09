@@ -2,6 +2,10 @@
 
 import { AddText, DrawBackground } from "./HelperFunctions.js";
 let MyCanvas = document.getElementById("MyCanvas");
+let SendButton = document.getElementById("SendButton");
+let WarningDisplay = document.getElementById("WarningDisplay");
+let NameInput = document.getElementById("NameInput");
+let PhoneInput = document.getElementById("PhoneInput");
 let ctx = MyCanvas.getContext("2d");
 let AddTextButton = document.getElementById("AddTextButton");
 let AddPicButton = document.getElementById("AddPicButton");
@@ -15,6 +19,41 @@ Canvas.selection = false;
 Canvas.setDimensions({
   width: 800,
   height: 500,
+});
+/**
+ *
+ * @param {string} UserName
+ * @param {number} UserNumber
+ */
+function ValidateInfo(UserName, UserNumber) {
+  if (String(UserNumber).length < 10 || UserName.length < 4) {
+    return false;
+  } else {
+    return true;
+  }
+}
+SendButton.addEventListener("click", function () {
+  // let MyCheck = ValidateInfo(NameInput.value, PhoneInput.value);
+  let MyCheck = true;
+  if (MyCheck) {
+    let dataUrl = MyCanvas.toDataURL("image/png");
+    fetch("127.0.0.1:5500/ImageUpload", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image: dataUrl }),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.status == 200) {
+          DisplayText("Всичко точно!", "green");
+        } else {
+          DisplayText("Има някъв зор...", "red");
+        }
+      })
+      .catch((error) => console.error("Error:", error));
+  } else {
+    DisplayText("Моля въведете телефон и/или име", "red");
+  }
 });
 
 AddTextButton.addEventListener("click", function () {
@@ -63,3 +102,11 @@ AddPicButton.addEventListener("change", function (e) {
     reader.readAsDataURL(UploadImg);
   }
 });
+/**
+ * @param {string} CustomText
+ * @param {string} CustomColor
+ */
+function DisplayText(CustomText, CustomColor) {
+  WarningDisplay.innerText = CustomText;
+  WarningDisplay.style.color = `${CustomColor}`;
+}
