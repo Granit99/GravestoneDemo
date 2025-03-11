@@ -6,6 +6,7 @@ let SendButton = document.getElementById("SendButton");
 let WarningDisplay = document.getElementById("WarningDisplay");
 let NameInput = document.getElementById("NameInput");
 let PhoneInput = document.getElementById("PhoneInput");
+let InfoInput = document.getElementById("InfoInput");
 let ctx = MyCanvas.getContext("2d");
 let AddTextButton = document.getElementById("AddTextButton");
 let AddPicButton = document.getElementById("AddPicButton");
@@ -38,12 +39,12 @@ SendButton.addEventListener("click", function () {
   if (MyCheck) {
     Canvas.discardActiveObject();
     Canvas.renderAll();
-    let Name = btoa(NameInput.value);
-    let Phone = btoa(PhoneInput.value);
-
+    let Encoder = new TextEncoder();
+    let Name = Encoder.encode(NameInput.value);
+    let Phone = Encoder.encode(PhoneInput.value);
+    let ExtraInfo = Encoder.encode(InfoInput.value);
     let Picture = MyCanvas.toDataURL("image/png");
-    const RequestBody = JSON.stringify([Picture, Name, Phone]);
-    // console.log("Request Body:", RequestBody);
+    let RequestBody = JSON.stringify([Picture, Name, Phone, ExtraInfo]);
 
     fetch("http://127.0.0.1:5501/ImageUpload", {
       method: "POST",
