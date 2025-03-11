@@ -36,11 +36,19 @@ SendButton.addEventListener("click", function () {
   // let MyCheck = ValidateInfo(NameInput.value, PhoneInput.value);
   let MyCheck = true;
   if (MyCheck) {
-    let dataUrl = MyCanvas.toDataURL("image/png");
-    fetch("127.0.0.1:5500/ImageUpload", {
+    Canvas.discardActiveObject();
+    Canvas.renderAll();
+    let Name = btoa(NameInput.value);
+    let Phone = btoa(PhoneInput.value);
+
+    let Picture = MyCanvas.toDataURL("image/png");
+    const RequestBody = JSON.stringify([Picture, Name, Phone]);
+    // console.log("Request Body:", RequestBody);
+
+    fetch("http://127.0.0.1:5501/ImageUpload", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ image: dataUrl }),
+      headers: { "Content-Type": "application/json;charset=utf-8'" },
+      body: RequestBody,
     })
       .then((response) => response.json())
       .then((result) => {
