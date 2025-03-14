@@ -11,7 +11,10 @@
   <body>
     <canvas width="800" height="600" id="MyCanvas"></canvas>
 
-    <div id="WarningDisplay"></div>
+    <div id="ControlsDiv">
+      <div id="TrashDiv"></div>
+      <div id="WarningDisplay"></div>
+    </div>
     <div id="ButtonContainer">
       <button style="display: flex" id="AddTextButton" class="CustomButton">
         Добави Текст
@@ -27,10 +30,12 @@
       />
     </div>
     <div id="FormContainer">
-      <label>Име и фамилия: </label>
-      <input id="NameInput" type="text" class="UserInput" />
-      <label>Телефон за връзка: </label>
-      <input id="PhoneInput" type="number" pattern="\d+" class="UserInput" />
+      <div id="InfoContainer">
+        <label>Име и фамилия: </label>
+        <input id="NameInput" type="text" class="UserInput" />
+        <label>Телефон за връзка: </label>
+        <input id="PhoneInput" type="number" pattern="\d+" class="UserInput" />
+      </div>
       <textarea
         class="UserInput"
         id="InfoInput"

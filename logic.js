@@ -4,6 +4,7 @@ import { AddText, DrawBackground } from "./HelperFunctions.js";
 let MyCanvas = document.getElementById("MyCanvas");
 let SendButton = document.getElementById("SendButton");
 let WarningDisplay = document.getElementById("WarningDisplay");
+let TrashDiv = document.getElementById("TrashDiv");
 let NameInput = document.getElementById("NameInput");
 let PhoneInput = document.getElementById("PhoneInput");
 let InfoInput = document.getElementById("InfoInput");
@@ -21,6 +22,27 @@ Canvas.setDimensions({
   width: 800,
   height: 500,
 });
+TrashDiv.addEventListener("mousedown", (e) => {
+  TrashDiv.style.transform = "scale(0.85)";
+});
+TrashDiv.addEventListener("mouseup", (e) => {
+  TrashDiv.style.transform = "scale(1)";
+});
+TrashDiv.addEventListener("click", function (e) {
+  let CurrentTarget = Canvas.getActiveObject();
+  if (CurrentTarget) {
+    Canvas.remove(CurrentTarget);
+    Canvas.discardActiveObject();
+    Canvas.requestRenderAll();
+  }
+});
+TrashDiv.addEventListener("mouseenter", (e) => {
+  TrashDiv.style.opacity = 1;
+});
+TrashDiv.addEventListener("mouseleave", (e) => {
+  TrashDiv.style.opacity = 0.5;
+  TrashDiv.style.transform = "scale(1)";
+});
 /**
  *
  * @param {string} UserName
@@ -33,37 +55,37 @@ function ValidateInfo(UserName, UserNumber) {
     return true;
   }
 }
-SendButton.addEventListener("click", function () {
-  // let MyCheck = ValidateInfo(NameInput.value, PhoneInput.value);
-  let MyCheck = true;
-  if (MyCheck) {
-    Canvas.discardActiveObject();
-    Canvas.renderAll();
-    let Encoder = new TextEncoder();
-    let Name = Encoder.encode(NameInput.value);
-    let Phone = Encoder.encode(PhoneInput.value);
-    let ExtraInfo = Encoder.encode(InfoInput.value);
-    let Picture = MyCanvas.toDataURL("image/png");
-    let RequestBody = JSON.stringify([Picture, Name, Phone, ExtraInfo]);
+// SendButton.addEventListener("click", function () {
+//   // let MyCheck = ValidateInfo(NameInput.value, PhoneInput.value);
+//   let MyCheck = true;
+//   if (MyCheck) {
+//     Canvas.discardActiveObject();
+//     Canvas.renderAll();
+//     let Encoder = new TextEncoder();
+//     let Name = Encoder.encode(NameInput.value);
+//     let Phone = Encoder.encode(PhoneInput.value);
+//     let ExtraInfo = Encoder.encode(InfoInput.value);
+//     let Picture = MyCanvas.toDataURL("image/png");
+//     let RequestBody = JSON.stringify([Picture, Name, Phone, ExtraInfo]);
 
-    fetch("http://127.0.0.1:5501/ImageUpload", {
-      method: "POST",
-      headers: { "Content-Type": "application/json;charset=utf-8'" },
-      body: RequestBody,
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        if (result.status == 200) {
-          DisplayText("Всичко точно!", "green");
-        } else {
-          DisplayText("Има някъв зор...", "red");
-        }
-      })
-      .catch((error) => console.error("Error:", error));
-  } else {
-    DisplayText("Моля въведете телефон и/или име", "red");
-  }
-});
+//     fetch("http://127.0.0.1:5501/ImageUpload", {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json;charset=utf-8'" },
+//       body: RequestBody,
+//     })
+//       .then((response) => response.json())
+//       .then((result) => {
+//         if (result.status == 200) {
+//           DisplayText("Всичко точно!", "green");
+//         } else {
+//           DisplayText("Има някъв зор...", "red");
+//         }
+//       })
+//       .catch((error) => console.error("Error:", error));
+//   } else {
+//     DisplayText("Моля въведете телефон и/или име", "red");
+//   }
+// });
 
 AddTextButton.addEventListener("click", function () {
   AddText("Киро Скалата", Canvas);

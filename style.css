@@ -219,3 +219,15 @@ input::-webkit-inner-spin-button {
 .UserInput::placeholder {
   color: rgb(255, 255, 255);
 }
+#TrashDiv {
+  min-width: 70px;
+  min-height: 70px;
+  background-image: url("trash1.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#InfoContainer {
+  margin: 15px;
+  transform: scale();
+}
