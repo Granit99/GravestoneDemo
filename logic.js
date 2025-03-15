@@ -34,6 +34,8 @@ TrashDiv.addEventListener("click", function (e) {
     Canvas.remove(CurrentTarget);
     Canvas.discardActiveObject();
     Canvas.requestRenderAll();
+  } else {
+    DisplayText("Няма избран елемент", "red");
   }
 });
 TrashDiv.addEventListener("mouseenter", (e) => {
@@ -42,6 +44,9 @@ TrashDiv.addEventListener("mouseenter", (e) => {
 TrashDiv.addEventListener("mouseleave", (e) => {
   TrashDiv.style.opacity = 0.5;
   TrashDiv.style.transform = "scale(1)";
+  setTimeout(() => {
+    WarningDisplay.innerText = "";
+  }, 3000);
 });
 /**
  *
@@ -56,7 +61,7 @@ function ValidateInfo(UserName, UserNumber) {
   }
 }
 // SendButton.addEventListener("click", function () {
-//   // let MyCheck = ValidateInfo(NameInput.value, PhoneInput.value);
+//   let MyCheck = ValidateInfo(NameInput.value, PhoneInput.value);
 //   let MyCheck = true;
 //   if (MyCheck) {
 //     Canvas.discardActiveObject();
@@ -86,7 +91,17 @@ function ValidateInfo(UserName, UserNumber) {
 //     DisplayText("Моля въведете телефон и/или име", "red");
 //   }
 // });
-
+SendButton.addEventListener("click", function () {
+  Canvas.discardActiveObject();
+  Canvas.renderAll();
+  let Picture = MyCanvas.toDataURL("image/png");
+  let link = document.createElement("a");
+  link.href = Picture;
+  link.download = "Pametnik.png"; // Set filename
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+});
 AddTextButton.addEventListener("click", function () {
   AddText("Киро Скалата", Canvas);
 });
